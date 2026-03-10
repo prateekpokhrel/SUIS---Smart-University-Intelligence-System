@@ -135,16 +135,17 @@ Notes: Verify API base URL in `Frontend/src/firebase.js` or any config pointing 
 - Add automated tests and CI.
 
 ## Authors and their Contributions:
-Pratik Pokhrel **Contribution**: Backend Implementation using FastAPI, **SEGA**, **Role based Logins**, Act as mentor For developing Entire frontend of the SUIS
-Adarsh Raj Poudel **Contribution**: Lead on Database Implementation, Co-mentor on Backend and rest.
-Unish Xetri **Contribution**: Spam Detection
-Sanskar Dumre **Contribution**: Peer Group concept and some sorts of frontend
-Prashish Yadav **Contribution**: ML modelling and all
-Ramesh Adhikari **Contribution**: All Research and Paper Works 
+- Pratik Pokhrel **Contribution**: Backend Implementation using FastAPI, **SEGA**, **Role based Logins**, Act as mentor For developing Entire frontend of the SUIS
+- Adarsh Raj Poudel **Contribution**: Lead on Database Implementation, Co-mentor on Backend and rest.
+- Unish Xetri **Contribution**: Spam Detection
+- Sanskar Dumre **Contribution**: Peer Group concept and some sorts of frontend
+- Prashish Yadav **Contribution**: ML modelling and all
+- Ramesh Adhikari **Contribution**: All Research and Paper Works 
 
 All rights are reserved under these poeple.
 
 ---
 
 Generated on: 2026-01-26
+
 
