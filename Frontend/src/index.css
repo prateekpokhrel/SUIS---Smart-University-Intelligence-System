@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ✅ Global Variables & Base Styles */
+:root {
+  --gmail-bg: #f6f8fc;
+  --gmail-sidebar-active: #c2e7ff;
+  --gmail-sidebar-hover: #e1e3e1;
+  --google-blue: #1a73e8;
+}
+
+body {
+  @apply bg-[#f6f8fc] text-[#202124] antialiased h-screen overflow-hidden;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+}
+
+/* ✅ Layout Structure */
+.app {
+  @apply flex flex-col h-full;
+}
+
+.main-container {
+  /* Creates the "floating sheet" effect with surrounding padding */
+  @apply flex flex-1 overflow-hidden px-2 pb-2;
+}
+
+/* ✅ Sidebar Navigation (Modern Pill Design) */
+.sidebar {
+  @apply w-64 bg-transparent pt-2 pr-4 flex flex-col gap-1;
+}
+
+.sidebar-item {
+  @apply flex items-center w-full py-2 px-6 rounded-r-full text-sm transition-all duration-200;
+  @apply bg-transparent text-[#3c4043] font-medium border-none cursor-pointer text-left;
+}
+
+.sidebar-item:hover {
+  background-color: var(--gmail-sidebar-hover);
+}
+
+.sidebar-item.active {
+  background-color: var(--gmail-sidebar-active);
+  @apply text-[#001d35] font-bold;
+}
+
+/* ✅ Content Area (The "White Sheet") */
+.content-area {
+  @apply flex-1 flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-transparent;
+}
+
+/* ✅ Email List View */
+.email-list-header {
+  @apply flex items-center justify-between p-4 border-b border-gray-100;
+}
+
+.email-item {
+  @apply flex items-center px-4 py-3 border-b border-gray-50 cursor-pointer relative transition-all bg-white;
+}
+
+.email-item:hover {
+  @apply shadow-md z-10 border-transparent bg-[#f8f9fa];
+}
+
+.email-sender {
+  @apply text-sm font-bold text-[#202124] truncate w-48 pr-4;
+}
+
+.email-subject {
+  @apply text-sm font-semibold text-[#202124] truncate;
+}
+
+.email-preview {
+  @apply text-sm text-[#5f6368] truncate flex-1;
+}
+
+/* ✅ Email Detail View */
+.email-detail {
+  @apply flex flex-col h-full bg-white p-8 overflow-y-auto;
+}
+
+.email-body-text {
+  @apply text-[15px] leading-relaxed text-[#3c4043] whitespace-pre-wrap font-sans mt-6;
+}
+
+/* ✅ Header Elements */
+.gmail-header {
+  @apply bg-transparent py-2 px-4 flex items-center justify-between;
+}
+
+.refresh-btn-header {
+  @apply flex items-center gap-2 bg-white border border-[#dadce0] px-4 py-2 rounded-lg;
+  @apply text-sm font-medium text-[#5f6368] hover:bg-[#f8f9fa] hover:shadow-sm transition-all;
+}
+
+/* ✅ Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+}

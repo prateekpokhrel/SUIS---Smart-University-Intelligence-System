@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+scikit-learn
+Flask==3.0.0
+flask-cors==4.0.0
+supabase==2.0.0
+python-dotenv
+PyJWT
+email-validator
+numpy==1.26.4
+pandas==2.2.2
+joblib==1.4.2
+websocket
+python-dotenv

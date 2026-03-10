@@ -1,0 +1,182 @@
+pip install supabase pydantic python-multipart
+
+
+import os
+import uuid
+from fastapi import FastAPI, UploadFile, File, Form
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from supabase import create_client, Client
+
+app = FastAPI(title="SUIS SEGA Emergency Server")
+
+# ================= CORS =================
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ================= SUPABASE CONFIG =================
+# ⚠️ REPLACE THESE WITH YOUR ACTUAL SUPABASE URL AND ANON/SERVICE KEY ⚠️
+SUPABASE_URL = "https://your-project-id.supabase.co"
+SUPABASE_KEY = "your-anon-or-service-role-key"
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# ================= MODELS =================
+class DispatchPayload(BaseModel):
+    team: str
+
+# =====================================================
+# ================= REPORT EMERGENCY ==================
+# =====================================================
+
+@app.post("/emergency/report")
+async def report_emergency(
+    role: str = Form(...),
+    category: str = Form(...),
+    type: str = Form(...),
+    explanation: str = Form(None),
+    location: str = Form(None),
+    route_to: str = Form(None),
+    is_direct_to_admin: str = Form("false"),
+    roll_number: str = Form(None),
+    image: UploadFile = File(None),
+    audio: UploadFile = File(None),
+):
+    # 1. Check if student is banned
+    if roll_number:
+        ban_check = supabase.table("banned_students").select("*").eq("roll_number", roll_number).execute()
+        if len(ban_check.data) > 0:
+            return {"error": "Student is temporarily banned from SEGA."}
+
+    # 2. Upload Image to Supabase Storage Bucket
+    image_public_url = None
+    if image and image.filename:
+        file_ext = image.filename.split(".")[-1]
+        image_path = f"images/{uuid.uuid4().hex}.{file_ext}"
+        image_bytes = await image.read()
+        
+        supabase.storage.from_("sega-evidence").upload(
+            path=image_path, 
+            file=image_bytes, 
+            file_options={"content-type": image.content_type}
+        )
+        # Generate the public URL for the frontend
+        image_public_url = supabase.storage.from_("sega-evidence").get_public_url(image_path)
+
+    # 3. Upload Audio to Supabase Storage Bucket
+    audio_public_url = None
+    if audio and audio.filename:
+        file_ext = audio.filename.split(".")[-1]
+        audio_path = f"audio/{uuid.uuid4().hex}.{file_ext}"
+        audio_bytes = await audio.read()
+        
+        supabase.storage.from_("sega-evidence").upload(
+            path=audio_path, 
+            file=audio_bytes, 
+            file_options={"content-type": audio.content_type}
+        )
+        # Generate the public URL for the frontend
+        audio_public_url = supabase.storage.from_("sega-evidence").get_public_url(audio_path)
+
+    # 4. Save entire record to Supabase DB
+    is_direct = True if str(is_direct_to_admin).lower() == "true" else False
+
+    incident_data = {
+        "role": role,
+        "category": category,
+        "type": type,
+        "explanation": explanation,
+        "location": location,
+        "route_to": route_to or 'teacher',
+        "is_direct_to_admin": is_direct,
+        "roll_number": roll_number,
+        "image_url": image_public_url,
+        "audio_url": audio_public_url,
+        "status": "Active"
+    }
+
+    result = supabase.table("incidents").insert(incident_data).execute()
+    return result.data[0] if result.data else {"error": "Failed to save incident"}
+
+# =====================================================
+# ================= GET ALL INCIDENTS =================
+# =====================================================
+
+@app.get("/emergency/all")
+def get_all():
+    # Fetch all incidents ordered by newest first
+    result = supabase.table("incidents").select("*").order("created_at", desc=True).execute()
+    return result.data
+
+# =====================================================
+# ================= RESOLVE (Output Tracker) ==========
+# =====================================================
+
+@app.post("/emergency/resolve/{incident_id}")
+def resolve_incident(incident_id: str, role: str = "system"):
+    # The SQL trigger will automatically populate 'resolved_at' when status hits 'Resolved'
+    update_data = {
+        "status": "Resolved",
+        "resolved_by_role": role
+    }
+    res = supabase.table("incidents").update(update_data).eq("id", incident_id).execute()
+    return {"message": "Resolved", "data": res.data}
+
+# =====================================================
+# ================= ESCALATE (Output Tracker) =========
+# =====================================================
+
+@app.post("/emergency/escalate/{incident_id}")
+def escalate_incident(incident_id: str, role: str = "teacher"):
+    # The SQL trigger automatically populates 'escalated_at'
+    update_data = {
+        "status": "Escalated to Admin",
+        "escalated_by_role": role
+    }
+    res = supabase.table("incidents").update(update_data).eq("id", incident_id).execute()
+    return {"message": "Escalated", "data": res.data}
+
+# =====================================================
+# ================= DISPATCH (Output Tracker) =========
+# =====================================================
+
+@app.post("/emergency/dispatch/{incident_id}")
+def dispatch_team(incident_id: str, payload: DispatchPayload):
+    # The SQL trigger automatically populates 'dispatched_at'
+    update_data = {
+        "status": "Emergency Team Dispatched",
+        "dispatched_team": payload.team,
+        "dispatched_by_role": "admin"
+    }
+    res = supabase.table("incidents").update(update_data).eq("id", incident_id).execute()
+    return {"message": f"Team {payload.team} Dispatched", "data": res.data}
+
+# =====================================================
+# ================= BAN STUDENT (Output Tracker) ======
+# =====================================================
+
+@app.post("/emergency/ban/{roll_number}")
+def ban_student(roll_number: str, role: str = "admin"):
+    supabase.table("banned_students").insert({
+        "roll_number": roll_number,
+        "banned_by_role": role
+    }).execute()
+    return {"message": f"Student {roll_number} banned"}
+
+@app.post("/emergency/unban/{roll_number}")
+def unban_student(roll_number: str):
+    supabase.table("banned_students").delete().eq("roll_number", roll_number).execute()
+    return {"message": f"Student {roll_number} unbanned"}
+
+# =====================================================
+# ================= HEALTH CHECK ======================
+# =====================================================
+
+@app.get("/")
+def root():
+    return {"status": "SUIS SEGA Server Running with Supabase"}
