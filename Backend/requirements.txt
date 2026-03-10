@@ -1,5 +1,21 @@
+# fastapi
+# uvicorn
+# pydantic
+# python-multipart
+# scikit-learn
+# Flask==3.0.0
+# flask-cors==4.0.0
+# supabase==2.0.0
+# python-dotenv
+# PyJWT
+# email-validator
+# pandas==2.2.2
+# numpy==1.26.4
+# joblib==1.4.2
+# websocket
+# python-dotenv
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic
 python-multipart
 scikit-learn
@@ -12,5 +28,4 @@ email-validator
 pandas==2.2.2
 numpy==1.26.4
 joblib==1.4.2
-websocket
-python-dotenv
+websockets
