@@ -1,4 +1,4 @@
-# SUIS — Student University & Internship Support
+# SUIS — Student University Intelligence System
 
 Project SUIS is a full-stack web application to support students, teachers and administrators with career prediction, university and scholarship recommendations, mentorship/mentee management, peer-group formation, and teacher workload balancing. This repository contains the Frontend (React + Vite), Backend (Python), ML artifacts, and supporting utilities.
 
@@ -21,11 +21,12 @@ Project SUIS is a full-stack web application to support students, teachers and a
 
 Purpose: Provide an integrated system that helps students discover suitable careers and universities, helps administrators and teachers manage students effectively, and supports mentorship and peer-group formation.
 
-Scope: Prediction pipelines (ML), a web front-end for users (students, teachers, admins), REST APIs for integrations, and utilities for exporting reports and detecting spam.
+Scope: Prediction pipelines (ML), a web front-end for users (students, teachers, admins), REST and Fast APIs for integrations, and utilities for exporting reports and detecting spam.
 
 ## Features (what we built)
 
 - **Career Prediction:** ML-based career recommender to suggest career paths for students, powered by a trained model stored in the Backend folder.
+- **SEGA**: A **role-based emergency governance infrastructure** integrated inside SUIS to manage campus emergency incidents in real time. It provides a **structured reporting and escalation mechanism** between students, teachers, and administrators.
 - **Career Suggestion Roadmap:** Suggested learning and course roadmap to reach recommended careers (frontend UI component around CareerPrediction).
 - **Scholarship Recommendations:** Display available scholarship opportunities relevant to students’ profiles.
 - **Admin Panel:** Full overview for administrators to view university details and system-wide data.
@@ -133,10 +134,17 @@ Notes: Verify API base URL in `Frontend/src/firebase.js` or any config pointing 
 - Expand ML explainability: include confidence scores and feature importances for recommendations.
 - Add automated tests and CI.
 
-## Authors & contact
+## Authors and their Contributions:
+Pratik Pokhrel **Contribution**: Backend Implementation using FastAPI, **SEGA**, **Role based Logins**, Act as mentor For developing Entire frontend of the SUIS
+Adarsh Raj Poudel **Contribution**: Lead on Database Implementation, Co-mentor on Backend and rest.
+Unish Xetri **Contribution**: Spam Detection
+Sanskar Dumre **Contribution**: Peer Group concept and some sorts of frontend
+Prashish Yadav **Contribution**: ML modelling and all
+Ramesh Adhikari **Contribution**: All Research and Paper Works 
 
-Project files maintained in this repository. For questions or to request SRS-specific expansions (tables of requirements, data dictionaries, sequence diagrams), ask and I will extend this README into a formal SRS section.
+All rights are reserved under these poeple.
 
 ---
 
 Generated on: 2026-01-26
+
