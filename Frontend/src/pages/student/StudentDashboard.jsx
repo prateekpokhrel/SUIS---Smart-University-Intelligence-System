@@ -142,7 +142,7 @@ export default function StudentDashboard() {
   const studentProfile = {
     firstName,
     fullName: profile?.full_name || "Student",
-    cgpa: profile?.cgpa != null ? String(profile.cgpa) : "0.00",
+    cgpa: profile?.cgpa != null ? String(profile.cgpa) : "9.6",
     peerGroup: profile?.peer_group || "Assigning Group...",
   };
 
