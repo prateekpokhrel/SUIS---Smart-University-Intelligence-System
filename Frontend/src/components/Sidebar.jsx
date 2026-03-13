@@ -31,30 +31,30 @@ export default function Sidebar({ role = "student" }) {
   const menus = {
     student: [
       { name: "Dashboard", icon: Home, path: "/student" },
+      { name: "SEGA", icon: ShieldAlert, path: "/student/sega" },
       { name: "Career Prediction", icon: Brain, path: "/student/career" },
       { name: "Career Path & Tracking", icon: PlayCircle, path: "/student/career-path" },
       { name: "Courses", icon: BookOpen, path: "/student/courses" },
       { name: "Peer Groups", icon: Users, path: "/student/PeerGroups" },
       { name: "Spam Detection", icon: MailWarning, path: "/student/spam" },
-      { name: "SEGA", icon: ShieldAlert, path: "/student/sega" },
       { name: "Settings", icon: Settings, path: "/settings" },
     ],
 
     teacher: [
       { name: "Dashboard", icon: Home, path: "/teacher" },
-      { name: "Student Reports", icon: Users, path: "/teacher/reports" },
       { name: "SEGA", icon: ShieldAlert, path: "/teacher/sega" },
+      { name: "Student Reports", icon: Users, path: "/teacher/reports" },
       { name: "Settings", icon: Settings, path: "/settings" },
     ],
 
     admin: [
       { name: "Dashboard", icon: Home, path: "/admin" },
       { name: "Student Progress", icon: Users, path: "/admin/students" },
-      { name: "Mentor–Mentee", icon: UserPlus, path: "/admin/mentees" },
+      { name: "SEGA", icon: ShieldAlert, path: "/admin/sega" },
+      { name: "Mentor-Mentee", icon: UserPlus, path: "/admin/mentees" },
       { name: "University Resources", icon: Building2, path: "/admin/resources" },
       { name: "University Trends", icon: BarChart3, path: "/admin/trends" },
       { name: "Dropout Prediction", icon: Brain, path: "/admin/dropout" },
-      { name: "SEGA", icon: ShieldAlert, path: "/admin/sega" },
       { name: "Settings", icon: Settings, path: "/settings" },
     ],
   };
